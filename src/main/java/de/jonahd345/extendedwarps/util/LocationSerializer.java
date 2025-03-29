@@ -8,13 +8,17 @@ import java.util.UUID;
 
 public class LocationSerializer {
     public static String getDataFromLocation(Location loc) {
-        return loc.getX() + ";" + loc.getY() + ";" + loc.getZ() + ";" + loc.getYaw() + ";" + loc.getPitch() + ";" + loc.getWorld().getUID().toString();
+        return loc != null ? loc.getX() + ";" + loc.getY() + ";" + loc.getZ() + ";" + loc.getYaw() + ";" + loc.getPitch() + ";" + loc.getWorld().getUID() : "";
     }
 
     public static Location getLocationFromData(String s) {
+        if (s == null || s.isEmpty()) {
+            return null;
+        }
         String[] parts = s.split(";");
         UUID u = UUID.fromString(parts[5]);
         World w = Bukkit.getServer().getWorld(u);
+
         return new Location(w, Double.parseDouble(parts[0]), Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Float.parseFloat(parts[3]), Float.parseFloat(parts[4]));
     }
 }
