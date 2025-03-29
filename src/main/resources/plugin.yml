@@ -1,0 +1,19 @@
+name: ExtendedWarps
+version: '1.0'
+main: de.jonahd345.extendedwarps.ExtendedWarps
+api-version: '1.17'
+author: JonaHD345
+description: A plugin that allows players to create and manage warps.
+website: https://jonahd345.de
+
+commands:
+  warp:
+    aliases: [warps]
+    permission: extendedwarps.command.warp
+    description: List all warps.
+  setwarp:
+    permission: extendedwarps.command.setwarp
+    description: Set a warp at your current location.
+  delwarp:
+    permission: extendedwarps.command.delwarp
+    description: Delete a warp.
