@@ -29,6 +29,7 @@ public class WarpService {
 
     public void loadWarps() {
         File file = new File(plugin.getDataFolder(), "warps.json");
+
         if (!file.exists()) {
             try {
                 file.createNewFile();
