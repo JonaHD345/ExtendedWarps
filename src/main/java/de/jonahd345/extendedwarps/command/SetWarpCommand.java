@@ -34,7 +34,7 @@ public class SetWarpCommand implements CommandExecutor {
             plugin.getWarpService().getWarps().add(new Warp(args[0], player.getLocation()));
             player.sendMessage(Config.getMessageWithPrefix(Config.MSG_SET_WARP).replace("%warp%", args[0]));
         } else {
-            player.sendMessage(Config.MSG_PREFIX + "§7Use /setwarp <warp>");
+            player.sendMessage(Config.getMessageWithPrefix(Config.MSG_SET_WARP_COMMAND_USAGE));
         }
         return false;
     }

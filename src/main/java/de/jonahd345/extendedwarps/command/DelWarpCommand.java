@@ -37,7 +37,7 @@ public class DelWarpCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(StringUtil.replacePlaceholder(Config.getMessageWithPrefix(Config.MSG_DEL_WARP), Map.of("%warp%", warp.getName())));
             return true;
         } else {
-            sender.sendMessage(Config.MSG_PREFIX + "§7Use /delwarp <warp>");
+            sender.sendMessage(Config.getMessageWithPrefix(Config.MSG_DEL_WARP_COMMAND_USAGE));
         }
         return false;
     }

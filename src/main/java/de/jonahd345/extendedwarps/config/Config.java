@@ -14,7 +14,9 @@ public enum Config {
     MSG_DEL_WARP(ConfigType.MESSAGE, "&7You have delete the warp &a%warp%&7."),
     MSG_WARP_ALREADY_EXISTING(ConfigType.MESSAGE, "&7The warp &a%warp%&7 already exists!"),
     MSG_WARP_IS_NOT_EXISTING(ConfigType.MESSAGE, "&7The warp &a%warp%&7 is not existing!"),
-    MSG_WARP_COMMAND_USAGE(ConfigType.MESSAGE, "&7Usage /warp <name>");
+    MSG_WARP_COMMAND_USAGE(ConfigType.MESSAGE, "&7Usage /warp <name>"),
+    MSG_SET_WARP_COMMAND_USAGE(ConfigType.MESSAGE, "&7Usage /setwarp <name>"),
+    MSG_DEL_WARP_COMMAND_USAGE(ConfigType.MESSAGE, "&7Usage /delwarp <name>");
 
     private final ConfigType configType;
     private final Object defaultValue;
