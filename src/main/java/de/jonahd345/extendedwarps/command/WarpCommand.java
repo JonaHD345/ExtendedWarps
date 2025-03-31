@@ -37,8 +37,12 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
         }
         if (args.length == 1) {
             Warp warp = plugin.getWarpService().getWarps().stream().filter(w -> w.getName().equalsIgnoreCase(args[0])).findFirst().orElse(null);
-            Sound sound = Registry.SOUNDS.get(NamespacedKey.fromString(Config.WARP_SOUND_NAME.toString()));
+            NamespacedKey key = NamespacedKey.fromString(Config.WARP_SOUND_NAME.toString());
+            Sound sound = null;
 
+            if (key != null) {
+                sound = Registry.SOUNDS.get(key);
+            }
             if (sound == null) {
                 sound = Sound.ENTITY_ENDERMAN_TELEPORT;
             }
@@ -47,7 +51,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             if (warp.getLocation() == null) {
-                player.sendMessage(Config.MSG_PREFIX + "§cWarp location is not set.");
+                player.sendMessage(Config.MSG_PREFIX + "§7Warp location is not set.");
                 return true;
             }
             player.teleport(warp.getLocation());
