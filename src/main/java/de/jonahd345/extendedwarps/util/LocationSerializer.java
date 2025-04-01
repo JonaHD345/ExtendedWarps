@@ -16,6 +16,9 @@ public class LocationSerializer {
             return null;
         }
         String[] parts = s.split(";");
+        if (parts.length != 6) {
+            return null;
+        }
         UUID u = UUID.fromString(parts[5]);
         World w = Bukkit.getServer().getWorld(u);
 
