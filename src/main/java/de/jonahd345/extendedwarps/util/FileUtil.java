@@ -24,15 +24,18 @@ public class FileUtil {
      * Creates the specified file if it does not exist.
      *
      * @param file the file to create
+     * @return boolean, if the file was created it returns true
      */
-    public static void createFile(File file) {
+    public static boolean createFile(File file) {
         if (!file.exists()) {
             try {
                 file.createNewFile();
+                return true;
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        return false;
     }
 
     /**
