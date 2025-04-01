@@ -17,3 +17,7 @@ commands:
   delwarp:
     permission: extendedwarps.command.delwarp
     description: Delete a warp.
+  extendedwarps:
+    aliases: [ewarps, ew]
+    permission: extendedwarps.command.extendedwarps
+    description: Show information about the plugin.
