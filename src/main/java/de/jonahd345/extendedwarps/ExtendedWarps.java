@@ -1,10 +1,12 @@
 package de.jonahd345.extendedwarps;
 
 import de.jonahd345.extendedwarps.command.DelWarpCommand;
+import de.jonahd345.extendedwarps.command.ExtendedWarpsCommand;
 import de.jonahd345.extendedwarps.command.SetWarpCommand;
 import de.jonahd345.extendedwarps.command.WarpCommand;
 import de.jonahd345.extendedwarps.service.ConfigService;
 import de.jonahd345.extendedwarps.service.WarpService;
+import de.jonahd345.extendedwarps.util.Metrics;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,6 +18,8 @@ public final class ExtendedWarps extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        new Metrics(this, 25309);
+
         this.configService = new ConfigService(this);
         this.configService.loadConfig();
 
@@ -38,5 +42,6 @@ public final class ExtendedWarps extends JavaPlugin {
         getCommand("warp").setExecutor(new WarpCommand(this));
         getCommand("setwarp").setExecutor(new SetWarpCommand(this));
         getCommand("delwarp").setExecutor(new DelWarpCommand(this));
+        getCommand("extendedwarps").setExecutor(new ExtendedWarpsCommand(this));
     }
 }

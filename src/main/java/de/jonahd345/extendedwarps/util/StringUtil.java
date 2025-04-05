@@ -4,6 +4,9 @@ import org.bukkit.ChatColor;
 
 import java.util.Map;
 
+/**
+ * This class provides methods for replacing placeholders and for translating colour codes into character strings.
+ */
 public class StringUtil {
     /**
      * Replaces placeholders in the input string with their corresponding values from the provided map.

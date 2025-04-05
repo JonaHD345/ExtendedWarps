@@ -29,12 +29,8 @@ public class WarpService {
 
     public void loadWarps() {
         File file = new File(plugin.getDataFolder(), "warps.json");
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                plugin.getLogger().log(Level.SEVERE,"An error occurred", e);
-            }
+
+        if (FileUtil.createFile(file)) {
             return;
         }
         try {

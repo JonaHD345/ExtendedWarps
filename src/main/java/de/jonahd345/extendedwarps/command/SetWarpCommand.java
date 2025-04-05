@@ -6,9 +6,12 @@ import de.jonahd345.extendedwarps.model.Warp;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-public class SetWarpCommand implements CommandExecutor {
+import java.util.List;
+
+public class SetWarpCommand implements CommandExecutor, TabCompleter {
     private ExtendedWarps plugin;
 
     public SetWarpCommand(ExtendedWarps plugin) {
@@ -34,8 +37,13 @@ public class SetWarpCommand implements CommandExecutor {
             plugin.getWarpService().getWarps().add(new Warp(args[0], player.getLocation()));
             player.sendMessage(Config.getMessageWithPrefix(Config.MSG_SET_WARP).replace("%warp%", args[0]));
         } else {
-            player.sendMessage(Config.MSG_PREFIX + "§7Use /setwarp <warp>");
+            player.sendMessage(Config.getMessageWithPrefix(Config.MSG_SET_WARP_COMMAND_USAGE));
         }
         return false;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        return List.of();
     }
 }
