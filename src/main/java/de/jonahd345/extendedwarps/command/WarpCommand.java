@@ -4,6 +4,7 @@ import de.jonahd345.extendedwarps.ExtendedWarps;
 import de.jonahd345.extendedwarps.config.Config;
 import de.jonahd345.extendedwarps.model.Warp;
 import de.jonahd345.extendedwarps.util.StringUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.Sound;
@@ -37,7 +38,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
         }
         if (args.length == 1) {
             Warp warp = plugin.getWarpService().getWarps().stream().filter(w -> w.getName().equalsIgnoreCase(args[0])).findFirst().orElse(null);
-            NamespacedKey key = NamespacedKey.fromString(Config.WARP_SOUND_NAME.toString());
+            NamespacedKey key = NamespacedKey.fromString(Config.WARP_SOUND_NAME.toString().toLowerCase().replace("_", "."));
             Sound sound = null;
 
             if (key != null) {

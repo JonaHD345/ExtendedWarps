@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 public enum Config {
     WARP_SOUND(ConfigType.CONFIG, true),
-    WARP_SOUND_NAME(ConfigType.CONFIG, "ENTITY_ENDER_DRAGON_GROWL"),
+    WARP_SOUND_NAME(ConfigType.CONFIG, "ENTITY_ENDERMAN_TELEPORT"),
     MSG_PREFIX(ConfigType.MESSAGE, "&a&lEXTENDEDWARPS §8» "),
     MSG_NO_PERMISSION(ConfigType.MESSAGE, "&cNo permission!"),
     MSG_WARP_TELEPORT(ConfigType.MESSAGE, "&7You have been teleported to &a%warp%&7."),
