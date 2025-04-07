@@ -32,6 +32,10 @@ public enum Config {
         return MSG_PREFIX + message.getValue().toString();
     }
 
+    public Boolean getValueAsBoolean() {
+        return Boolean.valueOf(this.value.toString());
+    }
+
     @Override
     public String toString() {
         return this.value.toString();
