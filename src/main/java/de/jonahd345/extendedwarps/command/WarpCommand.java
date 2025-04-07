@@ -56,7 +56,9 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             player.teleport(warp.getLocation());
-            player.playSound(player.getLocation(), sound, 1.0F, 1.0F);
+            if (Config.WARP_SOUND.toString().equalsIgnoreCase("true")) {
+                player.playSound(player.getLocation(), sound, 1, 1);
+            }
             player.sendMessage(StringUtil.replacePlaceholder(Config.getMessageWithPrefix(Config.MSG_WARP_TELEPORT), Map.of("%warp%", args[0])));
         } else {
             player.sendMessage(Config.getMessageWithPrefix(Config.MSG_WARP_COMMAND_USAGE));
