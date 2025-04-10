@@ -5,6 +5,7 @@ import lombok.Setter;
 
 @Getter
 public enum Config {
+    UPDATE_NOTIFICATION(ConfigType.CONFIG, true),
     WARP_SOUND(ConfigType.CONFIG, true),
     WARP_SOUND_NAME(ConfigType.CONFIG, "ENTITY_ENDERMAN_TELEPORT"),
     MSG_PREFIX(ConfigType.MESSAGE, "&a&lEXTENDEDWARPS §8» "),
