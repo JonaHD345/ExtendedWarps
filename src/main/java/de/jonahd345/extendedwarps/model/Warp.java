@@ -1,7 +1,6 @@
 package de.jonahd345.extendedwarps.model;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.google.gson.annotations.SerializedName;
 import de.jonahd345.extendedwarps.util.LocationSerializer;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,12 +22,12 @@ public class Warp {
         this.location = location;
     }
 
-    @JsonGetter("location")
+    @SerializedName("location")
     public String getSerializedLocation() {
         return LocationSerializer.getDataFromLocation(location);
     }
 
-    @JsonSetter("location")
+    @SerializedName("location")
     public void setSerializedLocation(String locationString) {
         this.location = LocationSerializer.getLocationFromData(locationString);
     }
