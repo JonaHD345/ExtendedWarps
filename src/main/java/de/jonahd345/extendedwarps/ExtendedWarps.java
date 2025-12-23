@@ -20,6 +20,8 @@ import java.io.File;
 
 @Getter
 public final class ExtendedWarps extends JavaPlugin {
+    private File configFile;
+
     private SettingsManager settingsManager;
     private GeneralSettings generalSettings;
     private MessageSettings messageSettings;
@@ -34,6 +36,7 @@ public final class ExtendedWarps extends JavaPlugin {
         new Metrics(this, 25309);
 
         // Settings
+        configFile = new File("plugins/" + getName() + "/config.yml");
         settingsManager = new SettingsManager(new YamlStorage())
                 .register(new GeneralSettings()).register(new MessageSettings());
         loadSettings();
@@ -80,7 +83,11 @@ public final class ExtendedWarps extends JavaPlugin {
 
     private void loadSettings() {
         try {
-            settingsManager.load(new File("plugins/" + getName() + "/config.yml").toPath());
+            settingsManager.load(configFile.toPath());
+
+            if (!configFile.exists()) {
+                settingsManager.save(configFile.toPath());
+            }
         } catch (Exception e) {
             getLogger().severe("Could not load config.yml:\n" + e.getMessage());
             getServer().getPluginManager().disablePlugin(this);
