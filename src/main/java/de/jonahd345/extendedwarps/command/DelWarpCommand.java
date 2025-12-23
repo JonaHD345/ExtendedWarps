@@ -1,7 +1,6 @@
 package de.jonahd345.extendedwarps.command;
 
 import de.jonahd345.extendedwarps.ExtendedWarps;
-import de.jonahd345.extendedwarps.config.Config;
 import de.jonahd345.extendedwarps.model.Warp;
 import de.jonahd345.extendedwarps.util.StringUtil;
 import org.bukkit.command.Command;
@@ -23,21 +22,21 @@ public class DelWarpCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (!sender.hasPermission("extendedwarps.command.delwarp")) {
-            sender.sendMessage(Config.getMessageWithPrefix(Config.MSG_NO_PERMISSION));
+            sender.sendMessage(plugin.getMessageSettings().noPermission());
             return true;
         }
         if (args.length == 1) {
             Warp warp = plugin.getWarpService().getWarps().stream().filter(w -> w.getName().equalsIgnoreCase(args[0])).findFirst().orElse(null);
 
             if (warp == null) {
-                sender.sendMessage(Config.getMessageWithPrefix(Config.MSG_WARP_IS_NOT_EXISTING));
+                sender.sendMessage(plugin.getMessageSettings().warpIsNotExisting());
                 return true;
             }
             plugin.getWarpService().getWarps().remove(warp);
-            sender.sendMessage(StringUtil.replacePlaceholder(Config.getMessageWithPrefix(Config.MSG_DEL_WARP), Map.of("%warp%", warp.getName())));
+            sender.sendMessage(StringUtil.replacePlaceholder(plugin.getMessageSettings().delWarp(), Map.of("%warp%", warp.getName())));
             return true;
         } else {
-            sender.sendMessage(Config.getMessageWithPrefix(Config.MSG_DEL_WARP_COMMAND_USAGE));
+            sender.sendMessage(plugin.getMessageSettings().delWarpCommandUsage());
         }
         return false;
     }

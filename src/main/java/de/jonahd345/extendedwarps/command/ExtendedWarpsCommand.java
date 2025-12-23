@@ -1,12 +1,16 @@
 package de.jonahd345.extendedwarps.command;
 
 import de.jonahd345.extendedwarps.ExtendedWarps;
-import de.jonahd345.extendedwarps.config.Config;
+import de.jonahd345.extendedwarps.model.Warp;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
-public class ExtendedWarpsCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ExtendedWarpsCommand implements CommandExecutor, TabCompleter {
     private ExtendedWarps plugin;
 
     public ExtendedWarpsCommand(ExtendedWarps plugin) {
@@ -15,26 +19,48 @@ public class ExtendedWarpsCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        if (!sender.hasPermission("extendedwarps.command.extendedwarps")) {
-            sender.sendMessage(Config.getMessageWithPrefix(Config.MSG_NO_PERMISSION));
+        if (!sender.hasPermission("extendedwarps.command.extendedwarps") || !sender.hasPermission("extendedwarps.admin")) {
+            sender.sendMessage(plugin.getMessageSettings().noPermission());
             return true;
         }
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("help")) {
-                sender.sendMessage(Config.MSG_PREFIX + "§" + plugin.getDescription().getName() + " Help:");
-                sender.sendMessage(Config.MSG_PREFIX + "§7/warp <name> §8- §7Teleport to a warp.");
-                sender.sendMessage(Config.MSG_PREFIX + "§7/setwarp <name> §8- §7Set a warp.");
-                sender.sendMessage(Config.MSG_PREFIX + "§7/delwarp <name> §8- §7Delete a warp.");
+                sender.sendMessage(plugin.getMessageSettings().prefix() + "§7" + plugin.getDescription().getName() + " Help:");
+                sender.sendMessage(plugin.getMessageSettings().warpCommandUsage());
+                sender.sendMessage(plugin.getMessageSettings().setWarpCommandUsage());
+                sender.sendMessage(plugin.getMessageSettings().delWarpCommandUsage());
             } else if (args[0].equalsIgnoreCase("reload")) {
-                plugin.getConfigService().loadConfig();
-                sender.sendMessage(Config.MSG_PREFIX + "§7Config reloaded!");
+                plugin.reloadSettings();
+                sender.sendMessage(plugin.getMessageSettings().prefix() + "§7Config reloaded!");
             }
         } else {
-            sender.sendMessage(Config.MSG_PREFIX + "§" + plugin.getDescription().getName() + " Help:");
-            sender.sendMessage(Config.MSG_PREFIX + "§7/warp <name> §8- §7Teleport to a warp.");
-            sender.sendMessage(Config.MSG_PREFIX + "§7/setwarp <name> §8- §7Set a warp.");
-            sender.sendMessage(Config.MSG_PREFIX + "§7/delwarp <name> §8- §7Delete a warp.");
+            sender.sendMessage(plugin.getMessageSettings().prefix() + "§7" + plugin.getDescription().getName() + " Help:");
+            sender.sendMessage(plugin.getMessageSettings().warpCommandUsage());
+            sender.sendMessage(plugin.getMessageSettings().setWarpCommandUsage());
+            sender.sendMessage(plugin.getMessageSettings().delWarpCommandUsage());
         }
         return false;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        ArrayList<String> subcommand = new ArrayList<>();
+
+        if (sender.hasPermission("extendedwarps.command.extendedwarps") || sender.hasPermission("extendedwarps.admin")) {
+            if (args.length == 1) {
+                subcommand.add("reload");
+                subcommand.add("help");
+            }
+        }
+        ArrayList<String> cl = new ArrayList<>();
+        String currentarg = args[args.length - 1].toLowerCase();
+
+        for(String s1 : subcommand) {
+            String s2 = s1.toLowerCase();
+            if(s2.startsWith(currentarg)) {
+                cl.add(s1);
+            }
+        }
+        return cl;
     }
 }

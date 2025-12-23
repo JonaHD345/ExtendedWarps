@@ -1,21 +1,30 @@
 package de.jonahd345.extendedwarps;
 
+import de.jonahd345.developerutils.setting.SettingsManager;
+import de.jonahd345.developerutils.setting.storage.YamlStorage;
 import de.jonahd345.extendedwarps.command.DelWarpCommand;
 import de.jonahd345.extendedwarps.command.ExtendedWarpsCommand;
 import de.jonahd345.extendedwarps.command.SetWarpCommand;
 import de.jonahd345.extendedwarps.command.WarpCommand;
 import de.jonahd345.extendedwarps.listener.ConnectionListener;
-import de.jonahd345.extendedwarps.service.ConfigService;
 import de.jonahd345.extendedwarps.service.UpdateService;
 import de.jonahd345.extendedwarps.service.WarpService;
+import de.jonahd345.extendedwarps.setting.GeneralSettings;
+import de.jonahd345.extendedwarps.setting.MessageSettings;
 import de.jonahd345.extendedwarps.util.Metrics;
 import lombok.Getter;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+
 @Getter
 public final class ExtendedWarps extends JavaPlugin {
-    private ConfigService configService;
+    private File configFile;
+
+    private SettingsManager settingsManager;
+    private GeneralSettings generalSettings;
+    private MessageSettings messageSettings;
 
     private WarpService warpService;
 
@@ -23,26 +32,66 @@ public final class ExtendedWarps extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        // Metrics
         new Metrics(this, 25309);
 
-        this.configService = new ConfigService(this);
-        this.configService.loadConfig();
+        // Settings
+        configFile = new File("plugins/" + getName() + "/config.yml");
+        settingsManager = new SettingsManager(new YamlStorage())
+                .register(new GeneralSettings()).register(new MessageSettings());
+        loadSettings();
 
-        this.warpService = new WarpService(this);
-        this.warpService.loadWarps();
+        // Warps
+        warpService = new WarpService(this);
+        warpService.loadWarps();
 
-        this.updateService = new UpdateService(this);
+        // Update Service
+        updateService = new UpdateService(this);
 
+        // Register Commands & Listeners
         init();
     }
 
     @Override
     public void onDisable() {
-        this.warpService.saveWarps();
+        warpService.saveWarps();
     }
 
     public static ExtendedWarps getInstance() {
         return getPlugin(ExtendedWarps.class);
+    }
+
+    public GeneralSettings getGeneralSettings() {
+        if (generalSettings == null) {
+            generalSettings = settingsManager.find(GeneralSettings.class).orElse(null);
+        }
+        return generalSettings;
+    }
+
+    public MessageSettings getMessageSettings() {
+        if (messageSettings == null) {
+            messageSettings = settingsManager.find(MessageSettings.class).orElse(null);
+        }
+        return messageSettings;
+    }
+
+    public void reloadSettings() {
+        generalSettings = null;
+        messageSettings = null;
+        loadSettings();
+    }
+
+    private void loadSettings() {
+        try {
+            settingsManager.load(configFile.toPath());
+
+            if (!configFile.exists()) {
+                settingsManager.save(configFile.toPath());
+            }
+        } catch (Exception e) {
+            getLogger().severe("Could not load config.yml:\n" + e.getMessage());
+            getServer().getPluginManager().disablePlugin(this);
+        }
     }
 
     private void init() {

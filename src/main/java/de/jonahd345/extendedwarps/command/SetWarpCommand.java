@@ -1,7 +1,6 @@
 package de.jonahd345.extendedwarps.command;
 
 import de.jonahd345.extendedwarps.ExtendedWarps;
-import de.jonahd345.extendedwarps.config.Config;
 import de.jonahd345.extendedwarps.model.Warp;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -26,18 +25,20 @@ public class SetWarpCommand implements CommandExecutor, TabCompleter {
         Player player = (Player) sender;
 
         if (!player.hasPermission("extendedwarps.command.setwarp")) {
-            player.sendMessage(Config.getMessageWithPrefix(Config.MSG_NO_PERMISSION));
+            player.sendMessage(plugin.getMessageSettings().noPermission());
             return true;
         }
         if (args.length == 1) {
-            if (plugin.getWarpService().getWarps().stream().anyMatch(w -> w.getName().equalsIgnoreCase(args[0]))) {
-                player.sendMessage(Config.getMessageWithPrefix(Config.MSG_WARP_ALREADY_EXISTING).replace("%warp%", args[0]));
+            String warpName = args[0].trim();
+
+            if (plugin.getWarpService().getWarps().stream().anyMatch(w -> w.getName().equalsIgnoreCase(warpName))) {
+                player.sendMessage(plugin.getMessageSettings().warpAlreadyExisting().replace("%warp%", warpName));
                 return true;
             }
-            plugin.getWarpService().getWarps().add(new Warp(args[0], player.getLocation()));
-            player.sendMessage(Config.getMessageWithPrefix(Config.MSG_SET_WARP).replace("%warp%", args[0]));
+            plugin.getWarpService().getWarps().add(new Warp(warpName, player.getLocation()));
+            player.sendMessage(plugin.getMessageSettings().setWarp().replace("%warp%", warpName));
         } else {
-            player.sendMessage(Config.getMessageWithPrefix(Config.MSG_SET_WARP_COMMAND_USAGE));
+            player.sendMessage(plugin.getMessageSettings().setWarpCommandUsage());
         }
         return false;
     }
