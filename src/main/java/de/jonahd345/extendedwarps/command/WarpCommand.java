@@ -1,10 +1,8 @@
 package de.jonahd345.extendedwarps.command;
 
 import de.jonahd345.extendedwarps.ExtendedWarps;
-import de.jonahd345.extendedwarps.config.Config;
 import de.jonahd345.extendedwarps.model.Warp;
 import de.jonahd345.extendedwarps.util.StringUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.Sound;
@@ -33,12 +31,12 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
         Player player = (Player) sender;
 
         if (!player.hasPermission("extendedwarps.command.warp")) {
-            player.sendMessage(Config.getMessageWithPrefix(Config.MSG_NO_PERMISSION));
+            player.sendMessage(plugin.getMessageSettings().noPermission());
             return true;
         }
         if (args.length == 1) {
             Warp warp = plugin.getWarpService().getWarps().stream().filter(w -> w.getName().equalsIgnoreCase(args[0])).findFirst().orElse(null);
-            NamespacedKey key = NamespacedKey.fromString(Config.WARP_SOUND_NAME.toString().toLowerCase().replace("_", "."));
+            NamespacedKey key = NamespacedKey.fromString(plugin.getGeneralSettings().getWarpSoundName().toLowerCase().replace("_", "."));
             Sound sound = null;
 
             if (key != null) {
@@ -48,20 +46,20 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                 sound = Sound.ENTITY_ENDERMAN_TELEPORT;
             }
             if (warp == null) {
-                player.sendMessage(StringUtil.replacePlaceholder(Config.getMessageWithPrefix(Config.MSG_WARP_IS_NOT_EXISTING), Map.of("%warp%", args[0])));
+                player.sendMessage(StringUtil.replacePlaceholder(plugin.getMessageSettings().warpIsNotExisting(), Map.of("%warp%", args[0])));
                 return true;
             }
             if (warp.getLocation() == null) {
-                player.sendMessage(Config.MSG_PREFIX + "§7Warp location is not set.");
+                player.sendMessage(plugin.getMessageSettings().prefix() + "§7Warp location is not set.");
                 return true;
             }
             player.teleport(warp.getLocation());
-            if (Config.WARP_SOUND.getValueAsBoolean()) {
+            if (plugin.getGeneralSettings().isWarpSound()) {
                 player.playSound(player.getLocation(), sound, 1, 1);
             }
-            player.sendMessage(StringUtil.replacePlaceholder(Config.getMessageWithPrefix(Config.MSG_WARP_TELEPORT), Map.of("%warp%", args[0])));
+            player.sendMessage(StringUtil.replacePlaceholder(plugin.getMessageSettings().warpTeleport(), Map.of("%warp%", args[0])));
         } else {
-            player.sendMessage(Config.getMessageWithPrefix(Config.MSG_WARP_COMMAND_USAGE));
+            player.sendMessage(plugin.getMessageSettings().warpCommandUsage());
         }
         return false;
     }

@@ -1,7 +1,6 @@
 package de.jonahd345.extendedwarps.service;
 
 import de.jonahd345.extendedwarps.ExtendedWarps;
-import de.jonahd345.extendedwarps.config.Config;
 import de.jonahd345.xenfororesourcemanagerapi.XenforoResourceManagerAPI;
 import de.jonahd345.xenfororesourcemanagerapi.model.Resource;
 import lombok.Getter;
@@ -30,18 +29,18 @@ public class UpdateService {
     }
 
     public void checkForUpdate() {
-        Resource resource = this.xenforoResourceManagerAPI.getResource(123828);
+        Resource resource = xenforoResourceManagerAPI.getResource(123828);
 
         if (resource != null) {
-            this.spigotVersion = resource.getCurrentVersion();
+            spigotVersion = resource.getCurrentVersion();
         } else {
-            this.spigotVersion = this.pluginVersion;
+            spigotVersion = pluginVersion;
         }
-        if (this.spigotVersion != null && !this.spigotVersion.isEmpty()) {
-            this.updateAvailable = this.spigotIsNewer();
-            if (this.updateAvailable && Config.UPDATE_NOTIFICATION.getValueAsBoolean()) {
-                this.plugin.getLogger().info(Config.MSG_PREFIX + "§7The new Version from ExtendedWarps v" +
-                        this.spigotVersion + " is available at: https://www.spigotmc.org/resources/extendedwarps.123828/");
+        if (spigotVersion != null && !spigotVersion.isEmpty()) {
+            updateAvailable = spigotIsNewer();
+            if (updateAvailable && plugin.getGeneralSettings().isUpdateNotification()) {
+                plugin.getLogger().info(plugin.getMessageSettings().getPrefix().replace("&", "") + "The new Version from ExtendedWarps v" +
+                        spigotVersion + " is available at: https://www.spigotmc.org/resources/extendedwarps.123828/");
             }
         }
     }
